@@ -1,11 +1,3 @@
-const express = require('express');
-const { Pool } = require('pg');
-const path = require('path');
-if (process.env.NODE_ENV !== 'production') {
-  require('dotenv').config();
-}
-
-const app = express();
 const PORT = process.env.PORT || 3000;
 
 // PostgreSQL Connection Setup (Neon Cloud DB)
