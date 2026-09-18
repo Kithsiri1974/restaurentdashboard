@@ -1,18 +1,20 @@
 const express = require('express');
 const { Pool } = require('pg');
 const path = require('path');
-require('dotenv').config();
+if (process.env.NODE_ENV !== 'production') {
+  require('dotenv').config();
+}
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
 // PostgreSQL Connection Setup (Neon Cloud DB)
 // Note: sslmode 'verify-full' suppresses pg-connection-string v9 deprecation warnings
+// PostgreSQL Connection Setup (Neon Cloud DB)
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
   ssl: { 
-    rejectUnauthorized: false,
-    sslmode: 'verify-full'
+    rejectUnauthorized: false
   }
 });
 
@@ -26,7 +28,7 @@ app.use(express.static(path.join(__dirname)));
 // Import separate route module for Order Requests (ord_req table)
 let orderRequestsRouter;
 try {
-  orderRequestsRouter = require('./api/ordReq')(pool);
+  orderRequestsRouter = require('./ordReq')(pool);
 } catch (e) {
   try {
     orderRequestsRouter = require('./ordReq')(pool);
