@@ -1,0 +1,367 @@
+/* ==========================================================
+   1. GLOBAL RESET & LAYOUT SETUP
+   ========================================================== */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 12px;
+}
+
+html, body {
+    width: 100vw;
+    height: 100vh;
+    background-color: #d8dddf; /* Desktop background color */
+    overflow-x: hidden;
+}
+
+.main-app-container {
+    width: 100%;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Hidden container class - hides workspace on startup */
+.hidden-workspace {
+    display: none !important;
+}
+
+/* ==========================================================
+   2. TOP MAIN MENU BAR
+   ========================================================== */
+.top-menu-bar {
+    background-color: #e4e4e4;
+    border: 1px solid #707070;
+    display: flex;
+    align-items: center;
+    padding: 2px 5px;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.menu-item {
+    position: relative;
+    display: inline-block;
+    margin-right: 15px;
+}
+
+.menu-label {
+    padding: 4px 8px;
+    cursor: pointer;
+    font-weight: bold;
+    color: #000;
+}
+
+.menu-label:hover {
+    background-color: #3399ff;
+    color: #ffffff;
+}
+
+/* Dropdown Menu styling */
+.dropdown-content {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background-color: #f1f1f1;
+    min-width: 140px;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+    border: 1px solid #999;
+    z-index: 1000;
+}
+
+.dropdown-content a {
+    color: black;
+    padding: 6px 12px;
+    text-decoration: none;
+    display: block;
+}
+
+.dropdown-content a:hover {
+    background-color: #0055ea;
+    color: white;
+}
+
+.menu-item:hover .dropdown-content {
+    display: block;
+}
+
+/* ==========================================================
+   3. WORKSPACE AREA & HEADER
+   ========================================================== */
+.workspace-area {
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.app-title-header {
+    text-align: right;
+    font-weight: bold;
+    font-size: 14px;
+    color: #002b80;
+    letter-spacing: 0.5px;
+    padding-right: 10px;
+}
+
+.top-controls-bar {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    background-color: #e4e4e4;
+    padding: 6px 12px;
+    border: 1px solid #b5b5b5;
+}
+
+.control-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: bold;
+}
+
+.combo-select {
+    padding: 3px 6px;
+    border: 1px solid #7f9db9;
+    background-color: #fff;
+}
+
+/* ==========================================================
+   4. CONTENT SPLIT PANEL (TABLE & FORM)
+   ========================================================== */
+.content-split-panel {
+    display: flex;
+    gap: 15px;
+    align-items: flex-start;
+}
+
+/* LEFT PANEL: TABLE CONTAINER */
+.table-box-container {
+    flex: 1;
+    background-color: #e4e4e4;
+    border: 1px solid #b5b5b5;
+    padding: 10px;
+    min-width: 0;
+}
+
+.box-subheading {
+    font-size: 11px;
+    color: #444;
+}
+
+.banner-title {
+    font-size: 20px;
+    font-weight: bold;
+    color: #000;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+}
+
+.search-bar-container {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.search-bar-container input {
+    flex: 1;
+    padding: 4px 8px;
+    border: 1px solid #7f9db9;
+}
+
+/* TABLE STYLES */
+.table-wrapper {
+    overflow-x: auto;
+    max-height: 520px;
+    overflow-y: auto;
+    border: 1px solid #7f9db9;
+    background-color: #fff;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+}
+
+th {
+    background-color: #d8dddf;
+    border: 1px solid #b5b5b5;
+    padding: 6px;
+    font-weight: bold;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+td {
+    border: 1px solid #e0e0e0;
+    padding: 5px 6px;
+    vertical-align: middle;
+}
+
+tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+tr:hover {
+    background-color: #e0eeff;
+}
+
+.status-in-stock {
+    color: green;
+    font-weight: bold;
+}
+
+.status-out-of-stock {
+    color: red;
+    font-weight: bold;
+}
+
+/* Table Thumbnail Image Styling */
+.table-img-thumb {
+    width: 36px;
+    height: 36px;
+    object-fit: cover;
+    border: 1px solid #b5b5b5;
+    border-radius: 2px;
+    background-color: #fff;
+    display: block;
+}
+
+/* RIGHT PANEL: FORM CONTAINER */
+.form-box-container {
+    width: 440px;
+    background-color: #e4e4e4;
+    border: 1px solid #b5b5b5;
+    padding: 10px;
+}
+
+.form-instruction {
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+}
+
+.form-row {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-row.full-width {
+    grid-column: span 2;
+}
+
+.form-row label {
+    font-size: 11px;
+    font-weight: bold;
+    margin-bottom: 2px;
+}
+
+.form-row input, 
+.form-row textarea {
+    padding: 3px 5px;
+    border: 1px solid #7f9db9;
+    background-color: #fff;
+}
+
+/* Form Picture Preview Styling */
+.image-preview-wrapper {
+    margin-top: 6px;
+    width: 100%;
+    min-height: 120px;
+    max-height: 180px;
+    background-color: #ffffff;
+    border: 1px solid #7f9db9;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+#imgPreview {
+    max-width: 100%;
+    max-height: 180px;
+    object-fit: contain;
+}
+
+.form-bottom-actions {
+    margin-top: 12px;
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+}
+
+/* ==========================================================
+   5. BUTTON STYLES & ACTIONS
+   ========================================================== */
+.btn-text-action {
+    background: none;
+    border: none;
+    color: #0044cc;
+    font-weight: bold;
+    cursor: pointer;
+    padding: 2px 4px;
+}
+
+.btn-text-action:hover {
+    text-decoration: underline;
+    color: #001a66;
+}
+
+/* Action Table Buttons */
+.btn-action-container {
+    display: flex;
+    gap: 4px;
+    align-items: center;
+}
+
+.btn-action {
+    font-family: 'Tahoma', 'Segoe UI', Arial, sans-serif;
+    font-size: 11px;
+    font-weight: bold;
+    padding: 2px 6px;
+    border-top: 2px solid #ffffff;
+    border-left: 2px solid #ffffff;
+    border-right: 2px solid #404040;
+    border-bottom: 2px solid #404040;
+    background-color: #d4d0c8;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    line-height: 1.2;
+}
+
+.btn-action:active {
+    border-top: 2px solid #404040;
+    border-left: 2px solid #404040;
+    border-right: 2px solid #ffffff;
+    border-bottom: 2px solid #ffffff;
+    padding: 3px 5px 1px 7px;
+}
+
+.btn-edit {
+    color: #000080;
+}
+
+.btn-edit:hover {
+    background-color: #316ac5;
+    color: #ffffff;
+}
+
+.btn-delete {
+    color: #a00000;
+}
+
+.btn-delete:hover {
+    background-color: #c00000;
+    color: #ffffff;
+}

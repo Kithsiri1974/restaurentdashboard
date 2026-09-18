@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ORDER REQUEST CONTROL</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <div class="main-app-container">
+        
+        <!-- Top Main Menu Bar -->
+        <div class="top-menu-bar">
+            <div class="menu-item">
+                <span class="menu-label">File</span>
+                <div class="dropdown-content">
+                    <a href="#" id="menuStockMast" onclick="showStockMast(); return false;">Stock Mast</a>
+                    <a href="#" id="menuOrderReq" onclick="showOrderReq(); return false;">Order Request</a>
+                    <a href="#" onclick="window.location.reload(); return false;">Refresh Page</a>
+                    <a href="#" onclick="clearSearch(); return false;">Clear Filters</a>
+                </div>
+            </div>
+            <div class="menu-item">
+                <span class="menu-label">Menu</span>
+                <div class="dropdown-content">
+                    <a href="#" onclick="focusNewItem(); return false;">New Item Entry</a>
+                    <a href="#" onclick="alert('Stock Mast Control System v1.0'); return false;">About System</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- WORKSPACE 1: Stock Mast Workspace -->
+        <div id="stockMastWorkspace" class="workspace-area" style="display: none;">
+            
+            <div class="app-title-header">STOCK_MAST CONTROL</div>
+
+            <div class="top-controls-bar">
+                <div class="control-item">
+                    <span>ITEM TYPE:</span>
+                    <select id="itemTypeSelect" class="combo-select">
+                        <option value="">All Types</option>
+                    </select>
+                </div>
+                
+                <div class="control-item">
+                    <span>ITEM CATEGORY:</span>
+                    <select id="itemCatSelect" class="combo-select">
+                        <option value="">All Categories</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="content-split-panel">
+
+                <!-- LEFT PANEL: Table View & Search -->
+                <div class="table-box-container">
+                    <div class="box-subheading">View Database Details</div>
+                    <div class="banner-title">stock mast</div>
+
+                    <div class="search-bar-container">
+                        <input type="text" id="searchInput" placeholder="Search by Code + Size (e.g., 101 LARGE)..." oninput="filterStockItems()">
+                        <button type="button" class="btn-text-action" onclick="clearSearch()">[Clear Filters]</button>
+                    </div>
+
+                    <div class="table-wrapper">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Image</th>
+                                    <th>Item Code</th>
+                                    <th>Description</th>
+                                    <th>Cat</th>
+                                    <th>Size</th>
+                                    <th>Unit</th>
+                                    <th>Qty Hand</th>
+                                    <th>Pur. Price</th>
+                                    <th>Sale Price</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tableData">
+                                <!-- Dynamic stock rows loaded via script.js -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- RIGHT PANEL: Stock Details Form -->
+                <div class="form-box-container">
+                    <div class="form-instruction">Select or edit item details below:</div>
+
+                    <form id="detailsForm">
+                        <input type="hidden" id="selectItCode">
+                        <input type="hidden" id="selectItSize">
+
+                        <div class="form-grid">
+                            <div class="form-row">
+                                <label for="inpCode">Item Code (it_code)</label>
+                                <input type="text" id="inpCode" required>
+                            </div>
+
+                            <div class="form-row">
+                                <label for="inpDesc">Description (it_desc)</label>
+                                <input type="text" id="inpDesc">
+                            </div>
+
+                            <div class="form-row">
+                                <label for="inpType">Item Type (item_type)</label>
+                                <input type="text" id="inpType">
+                            </div>
+
+                            <div class="form-row">
+                                <label for="inpCat">Category (item_cat)</label>
+                                <input type="text" id="inpCat">
+                            </div>
+
+                            <div class="form-row">
+                                <label for="inpSize">Size (item_size)</label>
+                                <input type="text" id="inpSize">
+                            </div>
+
+                            <div class="form-row">
+                                <label for="inpUnit">Unit (it_unit)</label>
+                                <input type="text" id="inpUnit">
+                            </div>
+
+                            <div class="form-row">
+                                <label for="inpQty">Stock in Hand (stock_in_hnd)</label>
+                                <input type="number" step="any" id="inpQty">
+                            </div>
+
+                            <div class="form-row">
+                                <label for="inpReorder">Reorder Level (reorderlevel)</label>
+                                <input type="number" step="any" id="inpReorder">
+                            </div>
+
+                            <div class="form-row">
+                                <label for="inpOpenStock">Open Stock (open_stock)</label>
+                                <input type="number" step="any" id="inpOpenStock">
+                            </div>
+
+                            <div class="form-row">
+                                <label for="inpFowdQty">Forward Qty (fowd_qty)</label>
+                                <input type="text" id="inpFowdQty">
+                            </div>
+
+                            <div class="form-row">
+                                <label for="inpDayOpenBal">Day Open Bal (dayopenbal)</label>
+                                <input type="number" step="any" id="inpDayOpenBal">
+                            </div>
+
+                            <div class="form-row">
+                                <label for="inpDayCloseBal">Day Close Bal (dayclosebal)</label>
+                                <input type="number" step="any" id="inpDayCloseBal">
+                            </div>
+
+                            <div class="form-row">
+                                <label for="inpPurPrice">Purchase Price (it_uprise_pur)</label>
+                                <input type="number" step="0.01" id="inpPurPrice">
+                            </div>
+
+                            <div class="form-row">
+                                <label for="inpSalPrice">Sale Price (it_uprise_sal)</label>
+                                <input type="number" step="0.01" id="inpSalPrice">
+                            </div>
+
+                            <div class="form-row">
+                                <label for="inpOpenStockDate">Open Stock Date</label>
+                                <input type="datetime-local" id="inpOpenStockDate">
+                            </div>
+
+                            <div class="form-row">
+                                <label for="inpProcesDate">Process Date</label>
+                                <input type="datetime-local" id="inpProcesDate">
+                            </div>
+
+                            <div class="form-row">
+                                <label for="inpLastPurchDate">Last Purchase Date</label>
+                                <input type="date" id="inpLastPurchDate">
+                            </div>
+
+                            <div class="form-row">
+                                <label for="inpRack">Rack No (rack_no)</label>
+                                <input type="text" id="inpRack">
+                            </div>
+
+                            <div class="form-row">
+                                <label for="inpUser">User Name (user_name)</label>
+                                <input type="text" id="inpUser">
+                            </div>
+
+                            <div class="form-row">
+                                <label for="inpSoftDrBeer">Soft Drink / Beer (softdrbeer)</label>
+                                <input type="text" id="inpSoftDrBeer">
+                            </div>
+
+                            <div class="form-row">
+                                <label for="inpMapItCode">Map Item Code (mapit_code)</label>
+                                <input type="text" id="inpMapItCode">
+                            </div>
+
+                            <div class="form-row">
+                                <label for="inpTdSpecial">TD Special (td_special)</label>
+                                <input type="text" id="inpTdSpecial">
+                            </div>
+
+                            <div class="form-row full-width">
+                                <label for="inpPicLink">Picture Link (pic_link)</label>
+                                <input type="text" id="inpPicLink" placeholder="Enter image URL...">
+                                <div class="image-preview-wrapper">
+                                    <img id="imgPreview" src="" alt="Item Preview" style="display: none;">
+                                </div>
+                            </div>
+
+                            <div class="form-row full-width">
+                                <label for="inpRemarks">Remarks (remarks)</label>
+                                <textarea id="inpRemarks" rows="2"></textarea>
+                            </div>
+                        </div>
+
+                        <div class="form-bottom-actions">
+                            <button type="submit" class="btn-text-action">[Save All Changes]</button>
+                            <button type="button" id="cancelBtn" class="btn-text-action">[Cancel]</button>
+                        </div>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- WORKSPACE 2: Order Request Workspace (ord_req) -->
+        <div id="orderReqWorkspace" class="workspace-area" style="display: block;">
+            
+            <div class="app-title-header">ORDER REQUEST CONTROL</div>
+
+            <div class="content-split-panel">
+
+                <!-- LEFT PANEL: Order Request Table View -->
+                <div class="table-box-container">
+                    <div class="box-subheading">View Database Details</div>
+                    <div class="banner-title">order request</div>
+
+                    <div class="search-bar-container">
+                        <input type="text" id="ordSearchInput" placeholder="Search by Req No, Item Code, Table No..." oninput="filterOrderRequests()">
+                        <button type="button" class="btn-text-action" onclick="clearOrdSearch()">[Clear Filters]</button>
+                    </div>
+
+                    <div class="table-wrapper">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Req No</th>
+                                    <th>Req Date & Time</th>
+                                    <th>Table No</th>
+                                    <th>Item Code</th>
+                                    <th>Description</th>
+                                    <th>Size</th>
+                                    <th>Req Qty</th>
+                                    <th>Tele No</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="ordTableData">
+                                <!-- Dynamic order request rows loaded via script.js -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- RIGHT PANEL: Order Request Form (ord_req Table) -->
+                <div class="form-box-container">
+                    <div class="form-instruction">Select or edit order request details below:</div>
+
+                    <form id="ordReqForm">
+                        <input type="hidden" id="selectOrdReqNo">
+
+                        <div class="form-grid">
+                            <div class="form-row">
+                                <label for="inpOrdReqNo">Req No (req_no)</label>
+                                <input type="text" id="inpOrdReqNo" required>
+                            </div>
+
+                            <div class="form-row">
+                                <label for="inpOrdReqDate">Req Date & Time (req_date)</label>
+                                <input type="datetime-local" id="inpOrdReqDate" required>
+                            </div>
+
+                            <div class="form-row">
+                                <label for="inpOrdTableNo">Table No (table_no)</label>
+                                <input type="text" id="inpOrdTableNo">
+                            </div>
+
+                            <div class="form-row">
+                                <label for="inpOrdItCode">Item Code (it_code)</label>
+                                <input type="text" id="inpOrdItCode" required>
+                            </div>
+
+                            <div class="form-row">
+                                <label for="inpOrdItDesc">Description (it_desc)</label>
+                                <input type="text" id="inpOrdItDesc">
+                            </div>
+
+                            <div class="form-row">
+                                <label for="inpOrdItSize">Size (item_size)</label>
+                                <input type="text" id="inpOrdItSize">
+                            </div>
+
+                            <div class="form-row">
+                                <label for="inpOrdReqQty">Req Qty (req_qty)</label>
+                                <input type="number" step="any" id="inpOrdReqQty" required>
+                            </div>
+
+                            <div class="form-row">
+                                <label for="inpOrdUnit">Unit (it_unit)</label>
+                                <input type="text" id="inpOrdUnit">
+                            </div>
+
+                            <div class="form-row">
+                                <label for="inpOrdTeleNo">Tele No (teleno)</label>
+                                <input type="text" id="inpOrdTeleNo">
+                            </div>
+
+                            <div class="form-row">
+                                <label for="inpOrdStatus">Status (status)</label>
+                                <select id="inpOrdStatus" class="combo-select">
+                                    <option value="PENDING">PENDING</option>
+                                    <option value="APPROVED">APPROVED</option>
+                                    <option value="REJECTED">REJECTED</option>
+                                    <option value="COMPLETED">COMPLETED</option>
+                                </select>
+                            </div>
+
+                            <div class="form-row">
+                                <label for="inpOrdReqOk">Req OK (req_ok)</label>
+                                <select id="inpOrdReqOk" class="combo-select">
+                                    <option value="false">False</option>
+                                    <option value="true">True</option>
+                                </select>
+                            </div>
+
+                            <div class="form-row full-width">
+                                <label for="inpOrdRemarks">Remarks (remarks)</label>
+                                <textarea id="inpOrdRemarks" rows="2"></textarea>
+                            </div>
+                        </div>
+
+                        <div class="form-bottom-actions">
+                            <button type="submit" class="btn-text-action">[Save All Changes]</button>
+                            <button type="button" id="ordCancelBtn" class="btn-text-action" onclick="resetOrdForm()">[Cancel]</button>
+                        </div>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
